@@ -15,7 +15,7 @@ local Hp_plyfill_rate = 0.2
 local Hp_printer_health = 100
 local Hp_printer_storage = 100
 
-local overheatchance = 500
+local overheatchance = 1000
 
 
 
@@ -67,14 +67,6 @@ function ENT:Destruct()
 	DarkRP.notify(self:Getowning_ent(), 1, 4, "Your Health Station has exploded!")
 end
 
-function ENT:BurstIntoFlames()
-	DarkRP.notify(self:Getowning_ent(), 0, 4, "Your Health Station is overheating!")
-	self.burningup = true
-	local burntime = math.random(8, 18)
-	self:Ignite(burntime, 0)
-	timer.Simple(burntime, function() self:Fireball() end)
-end
-
 function ENT:Fireball()
 	if not self:IsOnFire() then self.burningup = false return end
 	local dist = math.random(20, 280) -- Explosion radius
@@ -88,6 +80,14 @@ function ENT:Fireball()
 		end
 	end
 	self:Remove()
+end
+
+function ENT:BurstIntoFlames()
+	DarkRP.notify(self:Getowning_ent(), 0, 4, "Your Health Station is overheating!")
+	self.burningup = true
+	local burntime = math.random(8, 18)
+	self:Ignite(burntime, 0)
+	timer.Simple(burntime, function() self:Fireball() end)
 end
 
 PrintMore = function(ent)
@@ -174,4 +174,3 @@ function ENT:Use( activator, caller )
 			end
 		end
 end
-
